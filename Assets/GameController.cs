@@ -21,13 +21,17 @@ public class GameController : MonoBehaviour
     {
         Newblock();
     }
-
+    IEnumerator X()
+    {
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("SampleScene");
+    }
     void Newblock()
     {
         if(lastCube != null)
         {
-            currentCube.transform.position = new Vector3(Mathf.Round(currentCube.transform.position.x - lastCube.transform.position.x), currentCube.transform.position.y, MathF.Round(currentCube.transform.position.z - lastCube.transform.position.z));
-            currentCube.transform.localScale = new Vector3(lastCube.transform.position.x, lastCube.transform.position.y, lastCube.transform.position.z);
+            currentCube.transform.position = new Vector3(Mathf.Round(currentCube.transform.position.x - lastCube.transform.position.x), currentCube.transform.position.y, Mathf.Round(currentCube.transform.position.z - lastCube.transform.position.z));
+            currentCube.transform.localScale = new Vector3(lastCube.transform.position.x - Mathf.Abs(currentCube.transform.position.x - lastCube.transform.position.x), lastCube.transform.position.y, lastCube.transform.position.z - Mathf.Abs(currentCube.transform.position.z - lastCube.transform.position.z));
             currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, lastCube.transform.position, 0.5f) + Vector3.up * 5f; 
            
         }
@@ -36,13 +40,13 @@ public class GameController : MonoBehaviour
             Done = true;
             text.gameObject.SetActive(true);
             text.text = "Final Score: " + Level;
-            StartCouroutine(X());
+            StartCoroutine(X());
             return;
         }
         lastCube = currentCube;
         currentCube = Instantiate(lastCube);
         currentCube.name = Level + "";
-        currentCube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.HSVToRGB((Level1 / 100f) % 1f, 1f, 1f));
+        currentCube.GetComponent<MeshRenderer>().material.SetColor("_Color", Color.HSVToRGB((Level / 100f) % 1f, 1f, 1f));
         Level++;
         Camera.main.transform.position = currentCube.transform.position + new Vector3(100, 100, 100);
         Camera.main.transform.LookAt(currentCube.transform.position);
@@ -55,26 +59,23 @@ public class GameController : MonoBehaviour
         {
             return;
         }
-        var time = Mathf.Abs(Time.realTimeSinceStartup % 2f - 1f);
-        var pos1 = lastCube.transform.position = Vector3.Lerp(pos2, pos1, time);
+        var time = Mathf.Abs(Time.realtimeSinceStartup % 2f - 1f);
+        var pos1 = lastCube.transform.position + Vector3.up * 10f;
         var pos2 = pos1 + ((Level % 2 == 0) ? Vector3.left : Vector3.forward) * 120;
-    }
-    if(Level % 2 == 0)
-    {
-        currentCube.transform.position = Vector3.Lerp(pos2, pos1, time);
-    }
-    else
-    {
-        currentCube.transform.position = Vector3.Lerp(pos1, pos2, time);
-    }
+        
+        if (Level % 2 == 0)
+        {
+            currentCube.transform.position = Vector3.Lerp(pos2, pos1, time);
+        }
+        else
+        {
+            currentCube.transform.position = Vector3.Lerp(pos1, pos2, time);
+        }
+   
+        if(Input.GetMouseButtonDown(0))
+        {
+            Newblock();
+        }
 
-    if(Input.GetMouseButtonDown(0))
-    {
-        Newblock();
-    }
-    IEnumerator X()
-    {
-        yield return new WaitForSeconds(3f);
-        SceneManager.LoadScene("SampleScene");
     }
 }
