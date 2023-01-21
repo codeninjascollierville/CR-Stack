@@ -26,8 +26,8 @@ public class GameController : MonoBehaviour
     {
         if(lastCube != null)
         {
-            currentCube.tranform.position = new Vector3(Mathf.Round(currentCube.transformation.position.x - lastCube.transform.position.x), currentCube.transform.position.y, MathF.Round(currentCube.transform.position.z - lastCube.transform.position.z));
-
+            currentCube.transform.position = new Vector3(Mathf.Round(currentCube.transform.position.x - lastCube.transform.position.x), currentCube.transform.position.y, MathF.Round(currentCube.transform.position.z - lastCube.transform.position.z));
+            currentCube.transform.localScale = new Vector3(lastCube.transform.position.x, lastCube.transform.position.y, lastCube.transform.position.z);
             currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, lastCube.transform.position, 0.5f) + Vector3.up * 5f; 
            
         }
@@ -74,7 +74,7 @@ public class GameController : MonoBehaviour
     }
     IEnumerator X()
     {
-    yield return new WaitForSeconds(3f);
-    SeneManager.LoadScene("SampleScene")
+        yield return new WaitForSeconds(3f);
+        SceneManager.LoadScene("SampleScene");
     }
 }
