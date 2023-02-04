@@ -31,8 +31,11 @@ public class GameController : MonoBehaviour
         if(lastCube != null)
         {
             currentCube.transform.position = new Vector3(Mathf.Round(currentCube.transform.position.x - lastCube.transform.position.x), currentCube.transform.position.y, Mathf.Round(currentCube.transform.position.z - lastCube.transform.position.z));
-            currentCube.transform.localScale = new Vector3(lastCube.transform.position.x - Mathf.Abs(currentCube.transform.position.x - lastCube.transform.position.x), lastCube.transform.position.y, lastCube.transform.position.z - Mathf.Abs(currentCube.transform.position.z - lastCube.transform.position.z));
-            currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, lastCube.transform.position, 0.5f) + Vector3.up * 5f; 
+            currentCube.transform.localScale = new Vector3(lastCube.transform.localScale.x - Mathf.Abs(currentCube.transform.position.x - lastCube.transform.position.x), 
+                                                            lastCube.transform.localScale.y, 
+                                                            lastCube.transform.localScale.z - Mathf.Abs(currentCube.transform.position.z - lastCube.transform.position.z));
+            currentCube.transform.position = Vector3.Lerp(currentCube.transform.position, lastCube.transform.position, 0.5f) + Vector3.up * 5f;
+            text.text = "Score: " + Level;
            
         }
         if (currentCube.transform.localScale.x <= 0f || currentCube.transform.localScale.z <= 0f)
